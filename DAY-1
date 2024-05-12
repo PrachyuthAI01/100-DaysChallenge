@@ -1,0 +1,28 @@
+//This the problem from gfg 
+
+the problem is you have to find the Mininmum steps to Destintion 
+on a infinite number line with minimum no.steps moving
+
+so this is my approach 
+
+#include<bits/stdc++.h>
+using namespace std;
+int minSteps(int d) {
+      int ans=0,temp=0;
+      while(temp<d){
+          ans+=1;
+          temp+=ans;
+      }
+      if(temp==d)return ans;
+      int x = temp-d;
+      if(x%2==0)return ans;
+      if(ans%2==0)return ans+1;
+      return ans+2;
+}
+int main(){
+  int n;
+  cin>>n;
+  cout<<minSteps(n)<<"\n";
+}
+
+
