@@ -1,0 +1,167 @@
+// GFG (POTD)
+
+the given problem is all about the 
+finidng the good component in a given graph
+
+A component of the graph is good if and only if the component is fully connected.
+
+so for this my intuition is to 
+find out the edges and vertices using dfs
+and the logic is the total edges == vertices*(vertices-1)
+
+
+so here is the code
+
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+class Matrix {
+  public:
+    template <class T>
+    static void input(vector<vector<T>> &A, int n, int m) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                scanf("%d ", &A[i][j]);
+            }
+        }
+    }
+
+    template <class T>
+    static void print(vector<vector<T>> &A) {
+        for (int i = 0; i < A.size(); i++) {
+            for (int j = 0; j < A[i].size(); j++) {
+                cout << A[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+
+// } Driver Code Ends
+
+class Solution {
+  public:
+    void dfs(int node, vector<int> &vis,vector<int> adj[], int &ver, int &edg)
+    {
+        vis[node] = 1;
+        ver++;
+        for(auto it:adj[node])
+        {
+            edg++; 
+            if(!vis[it])
+            {
+                dfs(it, vis, adj, ver, edg);
+            }
+        }
+    }
+    int findNumberOfGoodComponent(int e, int v, vector<vector<int>> &edges) {
+        vector<int> adj[v+1];
+        for(auto it:edges)
+        {
+            int u = it[0];
+            int v = it[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        vector<int> vis(v + 1, 0);
+        int ans = 0;
+        for(int i = 1; i <= v; i++)
+        {
+            int ver= 0, edg = 0;
+            if(!vis[i])
+            {
+                dfs(i, vis, adj, ver, edg);
+                if(edg == ver*(ver-1))
+                {
+                    ans+=1;
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    scanf("%d ", &t);
+    while (t--) {
+
+        int e;
+        scanf("%d", &e);
+
+        int v;
+        scanf("%d", &v);
+
+        vector<vector<int>> edges(e, vector<int>(2));
+        Matrix::input(edges, e, 2);
+
+        Solution obj;
+        int res = obj.findNumberOfGoodComponent(e, v, edges);
+
+        cout << res << endl;
+    }
+}
+
+// } Driver Code Ends
+
+
+
+
+
+//Leetcode(POTD)
+
+the given problem is to flip the 1s to 0s and 
+maximise the sum buy considering every row as binary number 
+
+so i have used for loop and changed the first taking it as 
+
+ones to zero and zero to one as if have the ones at front it gives the 
+more values
+and remaining u ll be having the 
+
+code 
+if any doubts reach out 
+
+
+class Solution {
+public:
+    int matrixScore(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        
+        for(int i = 0; i < n; i++){
+            if(grid[i][0] == 0){
+                for(int j = 0; j < m; j++){
+                    grid[i][j] = 1 - grid[i][j];
+                }
+            }
+        }
+        
+        
+        for(int i = 1; i < m; i++){
+            int x = 0;
+            for(int j = 0; j < n; j++){
+                x += grid[j][i];
+            }
+            if(x < n - x){
+                for(int j = 0; j < n; j++){
+                    grid[j][i] = 1 - grid[j][i];
+                }
+            }
+        }
+        
+        int res = 0;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                res += grid[i][j] * (1 << (m - j - 1));
+            }
+        }
+        return res;
+    }
+};
